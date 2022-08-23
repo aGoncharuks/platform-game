@@ -10,11 +10,14 @@ export class Level {
 
     this.rows = rows.map((row, y) => {
       return row.map((ch, x) => {
-        let type = ELEMENTS_MAP[ch];
-        if (typeof type == "string") return type;
+				const element = ELEMENTS_MAP[ch];
+        if (typeof element.type == "string") {
+					return element;
+				}
         this.startActors.push(
-          type.create(new Vec(x, y), ch));
-        return "empty";
+          element.type.create(new Vec(x, y), ch)
+				);
+        return { type: 'empty' };
       });
     });
   }
@@ -30,7 +33,7 @@ Level.prototype.touches = function(pos, size, type) {
     for (let x = xStart; x < xEnd; x++) {
       let isOutside = x < 0 || x >= this.width ||
                       y < 0 || y >= this.height;
-      let here = isOutside ? "wall" : this.rows[y][x];
+      let here = isOutside ? "wall" : this.rows[y][x].type;
       if (here === type) return true;
     }
   }

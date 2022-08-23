@@ -16,6 +16,10 @@
   background: white;
 }
 
+.wall.invisible {
+  background: none;
+}
+
 .actor {
   position: absolute;
 }
