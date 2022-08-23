@@ -1,8 +1,9 @@
 import { Player } from 'player';
 
 export const ELEMENTS_MAP = {
-	'.': 'empty',
-	'#': 'wall',
-	'+': 'lava',
-	'@': Player
+	'.': {type: 'empty'},
+	'#': {type: 'wall'},
+	'i': {type: 'wall', modifiers: ['invisible']},
+	'+': {type: 'lava'},
+	'@': {type: Player}
 }
