@@ -28,6 +28,10 @@
   background: rgb(241, 229, 89);
 }
 
+.water {
+  background: aqua;
+}
+
 .player {
   background: rgb(64, 64, 64);
 }

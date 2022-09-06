@@ -8,4 +8,5 @@ export const ELEMENTS_MAP = {
 	'@': {type: Player},
 	'/': {type: 'money'},
     'w': {type: 'water'},
+	'<': {type: 'lava-mob'},
 }
