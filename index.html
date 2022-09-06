@@ -4,22 +4,15 @@
 	<meta charset="UTF-8">
 	<title>Platform game</title>
 	<link rel="stylesheet" href="display/css/dom-display.css">
-	<script type="importmap">
-		{
-			"imports": {
-				"level": "/level.js",
-				"display": "/display/dom-display.js",
-				"state": "/state.js",
-				"levels": "/levels.js",
-				"elements-map": "/elements-map.js",
-				"vec": "/vec.js",
-				"player": "/elements/player.js"
-			}
-		}
-	</script>
-	<script type="module" src="run.js"></script>
+	<script type="text/javascript" src="./game.js"></script>
+	<script type="text/javascript" src="./levels.js"></script>
+
 </head>
 <body>
-
+<script>
+	// let display = new DOMDisplay(document.body, simpleLevel);
+	// display.syncState(State.start(simpleLevel));
+	runGame(GAME_LEVELS, DOMDisplay);
+</script>
 </body>
 </html>
