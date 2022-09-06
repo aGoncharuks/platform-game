@@ -6,6 +6,6 @@ export const ELEMENTS_MAP = {
 	'i': {type: 'wall', modifiers: ['invisible']},
 	'+': {type: 'lava'},
 	'@': {type: Player},
-	'/': {type: 'money'},
-    'w': {type: 'water'},
+	'c': {type: 'coin'},
+	'w': {type: 'water'},
 }
