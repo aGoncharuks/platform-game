@@ -147,7 +147,7 @@ var DOMDisplay = class DOMDisplay {
 	}
 };
 
-var scale = 20;
+var scale = 16;
 
 function drawGrid(level) {
 	return elt(
