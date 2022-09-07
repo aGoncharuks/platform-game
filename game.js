@@ -287,7 +287,7 @@ Coin.prototype.collide = function (state) {
 	let filtered = state.actors.filter((a) => a !== this);
 	let status = state.status;
 	if (!filtered.some((a) => a.type === "coin")) status = "won";
-	return new State(state.level, filtered, status);
+	return new State(state.level, filtered, status, state.coins + 1);
 	// return new State(state.level, filtered, state.status, state.coins + 1);
 };
 
