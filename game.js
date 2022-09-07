@@ -285,7 +285,10 @@ Lava.prototype.collide = function (state) {
 
 Coin.prototype.collide = function (state) {
 	let filtered = state.actors.filter((a) => a !== this);
-	return new State(state.level, filtered, state.status, state.coins + 1);
+	let status = state.status;
+	if (!filtered.some((a) => a.type === "coin")) status = "won";
+	return new State(state.level, filtered, status);
+	// return new State(state.level, filtered, state.status, state.coins + 1);
 };
 
 Lava.prototype.update = function (time, state) {
