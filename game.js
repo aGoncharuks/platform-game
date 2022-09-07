@@ -121,6 +121,7 @@ var ELEMENTS_MAP = {
 	'@': {type: Player},
 	'c': {type: Coin},
 	'w': {type: 'water'},
+	'<': {type: 'lava-mob'},
 };
 
 function elt(name, attrs, ...children) {
