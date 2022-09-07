@@ -24,14 +24,15 @@ var Level = class Level {
 };
 
 var State = class State {
-	constructor(level, actors, status) {
+	constructor(level, actors, status, coins) {
 		this.level = level;
 		this.actors = actors;
 		this.status = status;
+		this.coins = coins;
 	}
 
 	static start(level) {
-		return new State(level, level.startActors, "playing");
+		return new State(level, level.startActors, "playing", 0);
 	}
 
 	get player() {
@@ -185,10 +186,24 @@ function drawActors(actors) {
 	);
 }
 
+function drawProgress(state) {
+	const progress = elt(
+		"div",
+		{ class: "coin-counter" },
+		elt("div", { class: "coin-symbol" }),
+		elt("div", { class: "coin-count" })
+	);
+	progress.querySelector(".coin-count").textContent = state.coins;
+	return progress;
+}
+
 DOMDisplay.prototype.syncState = function (state) {
 	if (this.actorLayer) this.actorLayer.remove();
+	if (this.progressLayer) this.progressLayer.remove();
 	this.actorLayer = drawActors(state.actors);
+	this.progressLayer = drawProgress(state);
 	this.dom.appendChild(this.actorLayer);
+	this.dom.appendChild(this.progressLayer);
 	this.dom.className = `game ${state.status}`;
 	this.scrollPlayerIntoView(state);
 };
@@ -237,13 +252,13 @@ Level.prototype.touches = function (pos, size, type) {
 
 State.prototype.update = function (time, keys) {
 	let actors = this.actors.map((actor) => actor.update(time, this, keys));
-	let newState = new State(this.level, actors, this.status);
+	let newState = new State(this.level, actors, this.status, this.coins);
 
 	if (newState.status !== "playing") return newState;
 
 	let player = newState.player;
 	if (this.level.touches(player.pos, player.size, "lava")) {
-		return new State(this.level, actors, "lost");
+		return new State(this.level, actors, "lost", this.coins);
 	}
 
 	for (let actor of actors) {
@@ -264,14 +279,12 @@ function overlap(actor1, actor2) {
 }
 
 Lava.prototype.collide = function (state) {
-	return new State(state.level, state.actors, "lost");
+	return new State(state.level, state.actors, "lost", state.coins);
 };
 
 Coin.prototype.collide = function (state) {
 	let filtered = state.actors.filter((a) => a !== this);
-	let status = state.status;
-	if (!filtered.some((a) => a.type === "coin")) status = "won";
-	return new State(state.level, filtered, status);
+	return new State(state.level, filtered, state.status, state.coins + 1);
 };
 
 Lava.prototype.update = function (time, state) {
