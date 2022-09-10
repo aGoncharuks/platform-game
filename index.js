@@ -1,4 +1,6 @@
-var Level = class Level {
+import { GAME_LEVELS } from './levels';
+
+const Level = class Level {
 	constructor(plan) {
 		let rows = plan
 			.trim()
@@ -23,7 +25,7 @@ var Level = class Level {
 	}
 };
 
-var State = class State {
+const State = class State {
 	constructor(level, actors, status, coins) {
 		this.level = level;
 		this.actors = actors;
@@ -40,7 +42,7 @@ var State = class State {
 	}
 };
 
-var Vec = class Vec {
+const Vec = class Vec {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
@@ -53,7 +55,7 @@ var Vec = class Vec {
 	}
 };
 
-var Player = class Player {
+const Player = class Player {
 	constructor(pos, speed) {
 		this.pos = pos;
 		this.speed = speed;
@@ -70,7 +72,7 @@ var Player = class Player {
 
 Player.prototype.size = new Vec(0.8, 1.5);
 
-var Lava = class Lava {
+const Lava = class Lava {
 	constructor(pos, speed, reset) {
 		this.pos = pos;
 		this.speed = speed;
@@ -94,7 +96,7 @@ var Lava = class Lava {
 
 Lava.prototype.size = new Vec(1, 1);
 
-var Coin = class Coin {
+const Coin = class Coin {
 	constructor(pos, basePos, wobble) {
 		this.pos = pos;
 		this.basePos = basePos;
@@ -113,7 +115,7 @@ var Coin = class Coin {
 
 Coin.prototype.size = new Vec(0.6, 0.6);
 
-var ELEMENTS_MAP = {
+const ELEMENTS_MAP = {
 	'.': {type: 'empty'},
 	'#': {type: 'wall'},
 	'i': {type: 'wall', modifiers: ['invisible']},
@@ -135,7 +137,7 @@ function elt(name, attrs, ...children) {
 	return dom;
 }
 
-var DOMDisplay = class DOMDisplay {
+const DOMDisplay = class DOMDisplay {
 	constructor(parent, level) {
 		this.dom = elt("div", { class: "game" }, drawGrid(level));
 		this.actorLayer = null;
@@ -147,7 +149,7 @@ var DOMDisplay = class DOMDisplay {
 	}
 };
 
-var scale = 16;
+const scale = 16;
 
 function drawGrid(level) {
 	return elt(
@@ -236,13 +238,13 @@ DOMDisplay.prototype.scrollPlayerIntoView = function (state) {
 };
 
 Level.prototype.touches = function (pos, size, type) {
-	var xStart = Math.floor(pos.x);
-	var xEnd = Math.ceil(pos.x + size.x);
-	var yStart = Math.floor(pos.y);
-	var yEnd = Math.ceil(pos.y + size.y);
+	const xStart = Math.floor(pos.x);
+	const xEnd = Math.ceil(pos.x + size.x);
+	const yStart = Math.floor(pos.y);
+	const yEnd = Math.ceil(pos.y + size.y);
 
-	for (var y = yStart; y < yEnd; y++) {
-		for (var x = xStart; x < xEnd; x++) {
+	for (let y = yStart; y < yEnd; y++) {
+		for (let x = xStart; x < xEnd; x++) {
 			let isOutside = x < 0 || x >= this.width || y < 0 || y >= this.height;
 			let here = isOutside ? "wall" : this.rows[y][x].type;
 			if (here === type) return true;
@@ -302,7 +304,7 @@ Lava.prototype.update = function (time, state) {
 	}
 };
 
-var wobbleSpeed = 8,
+const wobbleSpeed = 8,
 	wobbleDist = 0.07;
 
 Coin.prototype.update = function (time) {
@@ -315,9 +317,9 @@ Coin.prototype.update = function (time) {
 	);
 };
 
-var playerXSpeed = 7;
-var gravity = 30;
-var jumpSpeed = 17;
+const playerXSpeed = 7;
+const gravity = 30;
+const jumpSpeed = 17;
 
 Player.prototype.update = function (time, state, keys) {
 	let xSpeed = 0;
@@ -354,7 +356,7 @@ function trackKeys(keys) {
 	return down;
 }
 
-var arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
+const arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
 
 // Running the game
 function runAnimation(frameFunc) {
@@ -400,3 +402,7 @@ async function runGame(plans, Display) {
 	}
 	console.log("You've won!");
 }
+
+// let display = new DOMDisplay(document.body, simpleLevel);
+// display.syncState(State.start(simpleLevel));
+runGame(GAME_LEVELS, DOMDisplay);
