@@ -1,4 +1,5 @@
 import { GAME_LEVELS } from './levels';
+import './display/css/dom-display.css';
 
 const Level = class Level {
 	constructor(plan) {
