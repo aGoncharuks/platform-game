@@ -8,7 +8,8 @@
   padding: 0;
 }
 
-.lava {
+.lava,
+.lava-mob {
   background: rgb(183, 65, 14);
 }
 
