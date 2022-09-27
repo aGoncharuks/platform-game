@@ -37,12 +37,12 @@
   background: rgb(64, 64, 64);
 }
 
-.lost .player {
-  background: rgb(160, 64, 64);
+.exit {
+  background: darkslategrey;
 }
 
-.won .player {
-  box-shadow: -4px -7px 8px white, 4px -7px 8px white;
+.lost .player {
+  background: rgb(160, 64, 64);
 }
 
 .game {
