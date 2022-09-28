@@ -16,7 +16,7 @@ export class LavaMobBase {
 LavaMobBase.prototype.size = new Vec(1, 1);
 
 LavaMobBase.prototype.collide = function (state) {
-	return new State(state.level, state.actors, "lost", state.coins);
+	return new State({...state, status: 'lost'});
 };
 
 LavaMobBase.prototype.update = function (time, state) {

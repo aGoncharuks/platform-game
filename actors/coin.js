@@ -24,8 +24,9 @@ export class Coin {
 Coin.prototype.size = new Vec(0.6, 0.6);
 
 Coin.prototype.collide = function (state) {
-	let filtered = state.actors.filter((a) => a !== this);
-	return new State(state.level, filtered, state.status, state.coins + 1);
+	let actors = state.actors.filter((a) => a !== this);
+	let coins = state.coins + 1;
+	return new State({...state, actors, coins});
 };
 
 Coin.prototype.update = function (time) {
