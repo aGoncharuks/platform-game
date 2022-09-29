@@ -11,9 +11,14 @@ export class LavaMobBase {
 	get type() {
 		return 'lava';
 	}
+	
+	static get speedScalar() {
+		return 10;
+	}
 }
 
 LavaMobBase.prototype.size = new Vec(1, 1);
+
 
 LavaMobBase.prototype.collide = function (state) {
 	return new State({...state, status: 'lost'});
