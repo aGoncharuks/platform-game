@@ -1,7 +1,7 @@
 import { State } from '../game/state';
 
-export const Commands = {
-	's': {
+export const COMMANDS = {
+	s: {
 		action: (state) => {
 			if (state.coins <= 0) { return state; }
 			
@@ -11,13 +11,13 @@ export const Commands = {
 				modifiers: ['show-inivisible-walls']
 			});
 		},
-		schedule: {
+		cleanup: {
 			action: (state) => new State({
 				...state,
 				modifiers: state.modifiers.filter(modifier => modifier !== 'show-inivisible-walls')
 			}),
 			delay: 4000
-		},
-		inProcess: false
+		}
 	}
 }
+

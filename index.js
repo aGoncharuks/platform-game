@@ -3,8 +3,9 @@ import './display/css/dom-display.css';
 import { State } from './game/state';
 import { Level } from './game/level';
 import { trackMovementKeys } from './game/track-movement-keys';
-import { trackEventsKeys } from './game/track-events-keys';
+import { trackKeyDownComands } from './game/track-key-down-comands';
 import { DOMDisplay } from './display/dom-display';
+import { COMMANDS } from './commands/commands';
 
 // Running the game
 function runAnimation(frameFunc) {
@@ -21,14 +22,14 @@ function runAnimation(frameFunc) {
 }
 
 // Running the level
-function runLevel(level, Display, movementKeys, eventsToProcess) {
+function runLevel(level, Display, movementKeys, commands) {
 	let display = new Display(document.body, level);
 	let state = State.start(level);
 	let ending = 1;
 	
 	return new Promise((resolve) => {
 		runAnimation((time) => {
-			state = state.update(time, movementKeys, eventsToProcess);
+			state = state.update(time, movementKeys, commands);
 			display.syncState(state);
 			if (state.status === "playing") {
 				return true;
@@ -45,12 +46,12 @@ function runLevel(level, Display, movementKeys, eventsToProcess) {
 }
 
 const movementKeys = trackMovementKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
-const eventsToProcess = trackEventsKeys(["s"]);
+const commands = trackKeyDownComands(COMMANDS);
 
 async function runGame(plans, Display) {
 	
 	for (let level = 0; level < plans.length; ) {
-		let status = await runLevel(new Level(plans[level]), Display, movementKeys, eventsToProcess);
+		let status = await runLevel(new Level(plans[level]), Display, movementKeys, commands);
 		if (status === "won") level++;
 	}
 	console.log("You've won!");

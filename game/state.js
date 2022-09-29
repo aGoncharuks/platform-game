@@ -1,8 +1,4 @@
 import { overlap } from '../utils/helpers';
-import { Commands } from '../events/commands';
-
-const scheduledEventTimers = [];
-const scheduledStateUpdates = [];
 
 export class State {
 	constructor({level, actors, status, coins, modifiers = []}) {
@@ -22,37 +18,23 @@ export class State {
 	}
 }
 
-State.prototype.update = function (time, movementKeys, eventsToProcess) {
-	let actors = this.actors.map((actor) => actor.update(time, this, movementKeys, eventsToProcess));
+State.prototype.update = function (time, movementKeys, commands) {
+	let actors = this.actors.map((actor) => actor.update(time, this, movementKeys, commands));
 	let newState = new State({level: this.level, actors, status: this.status, coins: this.coins, modifiers: this.modifiers});
 	if (newState.status !== "playing") return newState;
 
-	while (eventsToProcess.length) {
-		const eventName = eventsToProcess.pop();
-		const event = Commands[eventName];
-		
-		if (!event || event.inProcess) {continue;}
-		
-		const {action, schedule} = event;
-		
-		if(schedule && scheduledEventTimers.includes(schedule)) {continue;}
-		
+	while (commands.length) {
+		const command = commands.pop();
+		const {action, cleanup} = command;
 	  newState = action(newState);
 		
-		if (!schedule) { continue; }
+		if (!cleanup) { continue; }
 		
-		event.inProcess = true;
-		scheduledEventTimers.push(
-			setTimeout(() => {
-				scheduledStateUpdates.push(schedule.action);
-				event.inProcess = false;
-			}, schedule.delay)
-		);
-	}
-	
-	while (scheduledStateUpdates.length) {
-		const update = scheduledStateUpdates.pop();
-		newState = update(newState);
+		if (command.timeoutId) {
+			clearTimeout(command.timeoutId);
+		}
+		
+		command.timeoutId = setTimeout(() => commands.push(cleanup), cleanup.delay);
 	}
 	
 	let player = newState.player;
