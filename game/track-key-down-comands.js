@@ -9,6 +9,7 @@ export function trackKeyDownComands(commands) {
 		if(commandsToProcess.includes(command)) {return;}
 		
 		if(command.cleanup && commandsToProcess.includes(command.cleanup.action)) {return;}
+		
 		commandsToProcess.push(command);
 	});
 	return commandsToProcess;
