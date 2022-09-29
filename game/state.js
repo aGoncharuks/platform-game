@@ -9,8 +9,13 @@ export class State {
 		this.modifiers = modifiers;
 	}
 	
-	static start(level) {
-		return new State({level, actors: level.startActors, status: 'playing', coins: 0});
+	static start(level, stateToTransfer = {}) {
+		return new State({
+			level,
+			actors: level.startActors,
+			status: 'playing',
+			coins: stateToTransfer.coins || 0
+		});
 	}
 	
 	get player() {

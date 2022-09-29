@@ -22,9 +22,9 @@ function runAnimation(frameFunc) {
 }
 
 // Running the level
-function runLevel(level, Display, movementKeys, commands) {
+function runLevel(level, Display, movementKeys, commands, stateToTransfer) {
 	let display = new Display(document.body, level);
-	let state = State.start(level);
+	let state = State.start(level, stateToTransfer);
 	let ending = 1;
 	
 	return new Promise((resolve) => {
@@ -38,7 +38,7 @@ function runLevel(level, Display, movementKeys, commands) {
 				return true;
 			} else {
 				display.clear();
-				resolve(state.status);
+				resolve(state);
 				return false;
 			}
 		});
@@ -49,10 +49,10 @@ const movementKeys = trackMovementKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
 const commands = trackKeyDownComands(COMMANDS);
 
 async function runGame(plans, Display) {
-	
+	let state = {};
 	for (let level = 0; level < plans.length; ) {
-		let status = await runLevel(new Level(plans[level]), Display, movementKeys, commands);
-		if (status === "won") level++;
+		state = await runLevel(new Level(plans[level]), Display, movementKeys, commands, state);
+		if (state.status === "won") level++;
 	}
 	console.log("You've won!");
 }
