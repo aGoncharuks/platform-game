@@ -1,4 +1,4 @@
-import { GAME_LEVELS } from './levels';
+import GAME_LEVELS from './levels.json';
 import './display/css/dom-display.css';
 import { State } from './game/state';
 import { Level } from './game/level';
@@ -26,7 +26,7 @@ function runLevel(level, Display, movementKeys, commands, stateToTransfer) {
 	let display = new Display(document.body, level);
 	let state = State.start(level, stateToTransfer);
 	let ending = 1;
-	
+
 	return new Promise((resolve) => {
 		runAnimation((time) => {
 			state = state.update(time, movementKeys, commands);

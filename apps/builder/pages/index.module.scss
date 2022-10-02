@@ -1,2 +1,28 @@
 .page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.levelGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.elementRow {
+  display: flex;
+}
+
+.elementCell {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  background-color: #ddd;
+}
+
+.elementSymbol {
+  position: absolute;
+  transform: translate(50%, 50%);
 }

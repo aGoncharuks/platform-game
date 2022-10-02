@@ -1,9 +1,9 @@
-import { readFileContent } from '../../utils/file-system';
+const fs = require(`fs`).promises;
 
 export default async function handler(req, res) {
-  const levels = await readFileContent('old/levels.js');
+  const levels = await fs.readFile('old/levels.json', `utf8`);
   console.log(levels);
   res
     .status(200)
-    .json(levels);
+    .send(levels)
 }

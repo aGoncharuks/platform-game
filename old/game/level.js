@@ -4,25 +4,23 @@ import { Vec } from '../utils/vec';
 export const Level = class Level {
 	constructor(plan) {
 		let rows = plan
-			.trim()
-			.split('\n')
 			.map((l) => [...l]);
 		this.height = rows.length;
 		this.width = rows[0].length;
 		this.startActors = [];
-		
+
 		this.rows = rows.map((row, y) => {
 			return row.map((ch, x) => {
 				const element = ELEMENTS_MAP[ch];
-				
+
 				if (typeof element.type === 'string') {
 					return element;
 				}
-				
+
 				this.startActors.push(
 					element.type.create(new Vec(x, y), ch)
 				);
-				
+
 				return {type: 'empty'};
 			});
 		});
