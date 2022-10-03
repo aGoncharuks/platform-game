@@ -9,11 +9,11 @@ export class Player {
 		this.pos = pos;
 		this.speed = speed;
 	}
-	
+
 	get type() {
 		return 'player';
 	}
-	
+
 	static create(pos) {
 		return new Player(pos.plus(new Vec(0, -0.5)), new Vec(0, 0));
 	}
