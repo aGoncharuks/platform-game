@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-	entry: './old/index.js',
+	entry: './game/index.js',
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, './dist'),
@@ -19,7 +19,7 @@ module.exports = {
 		}),
 		new CopyPlugin({
 			patterns: [
-				{ from: 'old/favicon.ico', to: 'old/favicon.ico' },
+				{ from: 'game/favicon.ico', to: 'favicon.ico' },
 			],
 		}),
 	],

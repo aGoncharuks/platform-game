@@ -1,6 +1,6 @@
 import styles from './index.module.scss';
-import { ELEMENTS_MAP } from '../../../old/elements-map.js';
-import { Vec } from '../../../old/utils/vec';
+import { ELEMENTS_MAP } from '../../../game/elements-map.js';
+import { Vec } from '../../../game/utils/vec';
 
 export function Index({levels}) {
   let elementClass = '';

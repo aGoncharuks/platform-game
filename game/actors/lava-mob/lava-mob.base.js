@@ -1,5 +1,5 @@
 import { Vec } from '../../utils/vec';
-import { State } from '../../game/state';
+import { State } from '../../core/state';
 
 export class LavaMobBase {
 	constructor(pos, speed, reset = null) {
@@ -7,11 +7,11 @@ export class LavaMobBase {
 		this.speed = speed;
 		this.reset = reset;
 	}
-	
+
 	get type() {
 		return 'lava';
 	}
-	
+
 	static get speedScalar() {
 		return 10;
 	}

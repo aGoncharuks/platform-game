@@ -6,7 +6,8 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "serve": "webpack serve --config old/webpack.config.js"
+    "serve:game": "webpack serve --config game/webpack.config.js",
+    "serve:builder": "nx serve builder"
   },
   "private": true,
   "dependencies": {

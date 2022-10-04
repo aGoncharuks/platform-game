@@ -1,13 +1,13 @@
 import GAME_LEVELS from './levels.json';
 import './display/css/dom-display.css';
-import { State } from './game/state';
-import { Level } from './game/level';
-import { trackMovementKeys } from './game/track-movement-keys';
-import { trackKeyDownComands } from './game/track-key-down-comands';
+import { State } from './core/state';
+import { Level } from './core/level';
+import { trackMovementKeys } from './core/track-movement-keys';
+import { trackKeyDownComands } from './core/track-key-down-comands';
 import { DOMDisplay } from './display/dom-display';
 import { COMMANDS } from './commands/commands';
 
-// Running the game
+// Running the core
 function runAnimation(frameFunc) {
 	let lastTime = null;
 	function frame(time) {

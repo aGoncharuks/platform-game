@@ -1,15 +1,15 @@
 import { Vec } from '../utils/vec';
-import { State } from '../game/state';
+import { State } from '../core/state';
 
 export class Exit {
 	constructor(pos) {
 		this.pos = pos;
 	}
-	
+
 	get type() {
 		return 'exit';
 	}
-	
+
 	static create(pos) {
 		return new Exit(pos);
 	}

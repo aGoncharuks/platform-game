@@ -1,5 +1,5 @@
 import { Vec } from '../utils/vec';
-import { State } from '../game/state';
+import { State } from '../core/state';
 
 const wobbleSpeed = 8;
 const	wobbleDist = 0.07;
@@ -10,11 +10,11 @@ export class Coin {
 		this.basePos = basePos;
 		this.wobble = wobble;
 	}
-	
+
 	get type() {
 		return 'coin';
 	}
-	
+
 	static create(pos) {
 		let basePos = pos.plus(new Vec(0.2, 0.1));
 		return new Coin(basePos, basePos, Math.random() * Math.PI * 2);
