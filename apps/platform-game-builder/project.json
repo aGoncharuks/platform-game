@@ -1,0 +1,95 @@
+{
+  "name": "platform-game-builder",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/platform-game-builder/src",
+  "prefix": "platform",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/platform-game-builder",
+        "index": "apps/platform-game-builder/src/index.html",
+        "main": "apps/platform-game-builder/src/main.ts",
+        "polyfills": "apps/platform-game-builder/src/polyfills.ts",
+        "tsConfig": "apps/platform-game-builder/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/platform-game-builder/src/favicon.ico",
+          "apps/platform-game-builder/src/assets"
+        ],
+        "styles": ["apps/platform-game-builder/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/platform-game-builder/src/environments/environment.ts",
+              "with": "apps/platform-game-builder/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "platform-game-builder:build:production"
+        },
+        "development": {
+          "browserTarget": "platform-game-builder:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "platform-game-builder:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/platform-game-builder/**/*.ts",
+          "apps/platform-game-builder/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/platform-game-builder"],
+      "options": {
+        "jestConfig": "apps/platform-game-builder/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
