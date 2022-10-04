@@ -1,11 +1,12 @@
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { Component } from '@angular/core';
+import { Builder } from './builder.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  standalone: true,
-  imports: [NxWelcomeComponent],
   selector: 'platform-root',
-  template: ` <platform-nx-welcome></platform-nx-welcome> `,
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [Builder],
+  template: ` <pgb-builder></pgb-builder> `,
   styles: [],
 })
 export class AppComponent {
