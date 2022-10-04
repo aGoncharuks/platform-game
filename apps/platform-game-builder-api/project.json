@@ -1,0 +1,60 @@
+{
+  "name": "platform-game-builder-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/platform-game-builder-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/platform-game-builder-api",
+        "main": "apps/platform-game-builder-api/src/main.ts",
+        "tsConfig": "apps/platform-game-builder-api/tsconfig.app.json",
+        "assets": ["apps/platform-game-builder-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/platform-game-builder-api/src/environments/environment.ts",
+              "with": "apps/platform-game-builder-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "platform-game-builder-api:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "platform-game-builder-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/platform-game-builder-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/platform-game-builder-api"],
+      "options": {
+        "jestConfig": "apps/platform-game-builder-api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

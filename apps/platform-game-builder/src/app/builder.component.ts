@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { ELEMENTS_MAP } from '../../../../game/elements-map.js';
 import { Vec } from '../../../../game/utils/vec.js';
 
@@ -10,19 +11,24 @@ import { Vec } from '../../../../game/utils/vec.js';
   imports: [CommonModule],
   template: `
     <div class="levelGrid">
-      <div *ngFor="let row of elementsGrid" class="elementRow">
+      <div *ngFor="let row of elementsGrid$ | async" class="elementRow">
         <div *ngFor="let element of row" class="elementCell">
-          <div class="elementView {{getElementClassList(element)}}">{{element}}</div>
+          <div class="elementView {{getElementClassList(element)}}"></div>
         </div>
       </div>
     </div>
   `,
   styles: [`
+    :host {
+      display: flex;
+      justify-content: center;
+    }
+
     .levelGrid {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      overflow: scroll;
+      overflow: auto;
       padding-bottom: 10px;
     }
     .elementRow {
@@ -72,16 +78,16 @@ import { Vec } from '../../../../game/utils/vec.js';
   `]
 })
 export class Builder implements OnInit {
-  elementsGrid = [];
+  readonly elementsGrid$ = new BehaviorSubject([]);
 
   constructor() {}
 
   async ngOnInit() {
-    // const res = await fetch('http://localhost:4200/api/levels');
-    // const levels = await res.json();
-    // this.elementsGrid = levels[0].map(
-    //   (row: string) => ([...row])
-    // );
+    const res = await fetch('api/levels');
+    const levels = await res.json();
+    this.elementsGrid$.next(levels[0].map(
+      (row: string) => ([...row])
+    ));
   }
 
   getElementClassList(elementSymbol: string) {
@@ -94,14 +100,12 @@ export class Builder implements OnInit {
       return elementClassList;
     }
 
-
     if (typeof type === 'string') {
       elementClassList = type;
     } else {
       const actor = type.create(new Vec(0, 0));
       elementClassList = actor.type;
     }
-
 
     if (Array.isArray(modifiers) && modifiers.length) {
       const modifiersClasses = modifiers.map(modifier => modifier);
