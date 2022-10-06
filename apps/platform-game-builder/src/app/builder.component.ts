@@ -13,12 +13,13 @@ import { Vec } from '../../../../game/utils/vec.js';
     <div class="controlPanel">
       <div class="levels">
         <div *ngFor="let level of levels$ | async; index as i"
+             (click)="selectLevel(i)"
              class="level" >L{{i + 1}}</div>
       </div>
       <div class="availableElements">
         <div *ngFor="let element of availableElements"
              (click)="selectElement(element)"
-             class="element">{{element.key}}</div>
+             class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
         <button (click)="saveChanges()"
                 class="saveChanges">Save</button>
       </div>
@@ -29,7 +30,7 @@ import { Vec } from '../../../../game/utils/vec.js';
         <div *ngFor="let element of row; index as x"
              (click)="replaceElementWithSelected(x, y)"
              class="elementCell">
-          <div class="elementView {{getElementClassList(element)}}"></div>
+          <div class="elementView {{elementClassListMap[element]}}"></div>
         </div>
       </div>
     </div>
@@ -37,8 +38,9 @@ import { Vec } from '../../../../game/utils/vec.js';
   styles: [`
     :host {
       display: flex;
-      justify-content: center;
       flex-direction: column;
+      background-color: lightblue;
+      height: 100vh;
     }
     .controlPanel {
       display: flex;
@@ -134,6 +136,7 @@ import { Vec } from '../../../../game/utils/vec.js';
 })
 export class Builder implements OnInit {
   levels$ = new BehaviorSubject([]);
+  elementClassListMap: Record<string, string> = {};
 
   readonly availableElements = Object.entries(ELEMENTS_MAP).map(
     //@ts-ignore
@@ -153,6 +156,8 @@ export class Builder implements OnInit {
   constructor() {}
 
   async ngOnInit() {
+    this.fillElementsClassListMap();
+
     const res = await fetch('api/levels');
     const levels = await res.json();
     this.levels$.next(levels);
@@ -169,29 +174,36 @@ export class Builder implements OnInit {
     });
   }
 
-  getElementClassList(elementSymbol: string) {
-    let elementClassList = '';
+  fillElementsClassListMap() {
+    for (const key in ELEMENTS_MAP) {
+      let elementClassList = '';
 
-    //@ts-ignore
-    const { type, modifiers } = ELEMENTS_MAP[elementSymbol];
+      //@ts-ignore
+      const { type, modifiers } = ELEMENTS_MAP[key];
 
-    if (type === 'empty') {
-      return elementClassList;
+      if (type === 'empty') {
+        this.elementClassListMap[key] = elementClassList;
+        continue;
+      }
+
+      if (typeof type === 'string') {
+        elementClassList = type;
+      } else {
+        const actor = type.create(new Vec(0, 0));
+        elementClassList = actor.type;
+      }
+
+      if (Array.isArray(modifiers) && modifiers.length) {
+        const modifiersClasses = modifiers.map(modifier => modifier);
+        elementClassList = [elementClassList, ...modifiersClasses].join(' ');
+      }
+
+      this.elementClassListMap[key] = elementClassList;
     }
+  }
 
-    if (typeof type === 'string') {
-      elementClassList = type;
-    } else {
-      const actor = type.create(new Vec(0, 0));
-      elementClassList = actor.type;
-    }
-
-    if (Array.isArray(modifiers) && modifiers.length) {
-      const modifiersClasses = modifiers.map(modifier => modifier);
-      elementClassList = [elementClassList, ...modifiersClasses].join(' ');
-    }
-
-    return elementClassList;
+  selectLevel(index: number) {
+    this.selectedLevelIndex$.next(index);
   }
 
   selectElement(element: any) {
