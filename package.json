@@ -7,7 +7,6 @@
     "build": "nx build",
     "test": "nx test",
     "serve:game": "webpack serve --config game/webpack.config.js",
-    "serve:builder": "nx serve builder",
     "postinstall": "ngcc --properties es2020 browser module main"
   },
   "private": true,

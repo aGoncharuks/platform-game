@@ -15,6 +15,7 @@ import { Vec } from '../../../../game/utils/vec.js';
         <div *ngFor="let level of levels$ | async; index as i"
              (click)="selectLevel(i)"
              class="level" >L{{i + 1}}</div>
+        <div class="level" (click)="addLevel()">+</div>
       </div>
       <div class="availableElements">
         <div *ngFor="let element of availableElements"
@@ -135,6 +136,9 @@ import { Vec } from '../../../../game/utils/vec.js';
   `]
 })
 export class Builder implements OnInit {
+  private static EMPTY_ELEMENT_TYPE = 'empty';
+  private static LEVEL_WIDTH_IN_ELEMENTS = 80;
+  private static LEVLE_HEIGHT_IN_ELEMENTS = 25;
   levels$ = new BehaviorSubject([]);
   elementClassListMap: Record<string, string> = {};
 
@@ -181,7 +185,7 @@ export class Builder implements OnInit {
       //@ts-ignore
       const { type, modifiers } = ELEMENTS_MAP[key];
 
-      if (type === 'empty') {
+      if (type === Builder.EMPTY_ELEMENT_TYPE) {
         this.elementClassListMap[key] = elementClassList;
         continue;
       }
@@ -218,6 +222,18 @@ export class Builder implements OnInit {
     selectedLevel[y] = replaceAt(selectedLevel[y], x, this.selectedElement.key);
     levels[selectedLevelIndex] = selectedLevel;
     this.levels$.next(levels);
+  }
+
+  addLevel(): void {
+    const currentLevels = this.levels$.getValue();
+    const [emptySymbolKey] = Object.entries(ELEMENTS_MAP).find(
+      ([key, value]) => value.type === Builder.EMPTY_ELEMENT_TYPE
+    )![0];
+    const newLevel = new Array(Builder.LEVLE_HEIGHT_IN_ELEMENTS).fill(
+      emptySymbolKey.repeat(Builder.LEVEL_WIDTH_IN_ELEMENTS)
+    );
+    //@ts-ignore
+    this.levels$.next([...currentLevels, newLevel]);
   }
 }
 
