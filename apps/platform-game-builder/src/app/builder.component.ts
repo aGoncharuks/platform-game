@@ -20,6 +20,7 @@ import { Vec } from '../../../../game/utils/vec.js';
       <div class="availableElements">
         <div *ngFor="let element of availableElements"
              (click)="selectElement(element)"
+             [class.selected]="selectedElement === element"
              class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
         <button (click)="saveChanges()"
                 class="saveChanges">Save</button>
@@ -72,6 +73,9 @@ import { Vec } from '../../../../game/utils/vec.js';
     }
     .element:hover{
       opacity: 0.5;
+    }
+    .element.selected {
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
     }
     .saveChanges {
       cursor: pointer;
@@ -147,8 +151,8 @@ export class Builder implements OnInit {
     ([key, value]) => ({...value, key})
   )
 
+  selectedElement = this.availableElements[1];
   private selectedLevelIndex$ = new BehaviorSubject(0);
-  private selectedElement = this.availableElements[0];
 
   readonly elementsGrid$ = combineLatest(this.levels$, this.selectedLevelIndex$).pipe(
     skipWhile(([levels]) => levels.length === 0),
