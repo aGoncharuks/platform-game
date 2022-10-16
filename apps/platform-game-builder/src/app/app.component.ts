@@ -1,4 +1,4 @@
-import { Builder } from './builder.component';
+import { Builder } from '../builder/builder.component';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
