@@ -4,6 +4,9 @@ import { ComponentStore } from '@ngrx/component-store';
 import { switchMap, tap, withLatestFrom } from 'rxjs';
 import { BuilderState, GameElement, GameElementCoordinates, GameLevel } from './builder.types';
 
+const levelWidthInElements = 80;
+const levelHeightInElements = 25;
+
 const initialBuilderStore: BuilderState = {
   levels: [],
   selectedLevelIndex: 0,
@@ -49,8 +52,8 @@ export class BuilderComponentStore extends ComponentStore<BuilderState> {
 
   addLevel = this.updater(
     (state) => {
-      const newLevel = new Array(LEVEL_HEIGHT_IN_ELEMENTS).fill(
-        '.'.repeat(LEVEL_WIDTH_IN_ELEMENTS)
+      const newLevel = new Array(levelHeightInElements).fill(
+        '.'.repeat(levelWidthInElements)
       );
       return {...state, levels: [...state.levels, newLevel]}
     }
@@ -75,6 +78,3 @@ const replaceAt = (str: string, index: number, replacement: string) => {
   return str.substring(0, index) + replacement + str.substring(index + 1);
 }
 
-const EMPTY_ELEMENT_TYPE = 'empty';
-const LEVEL_WIDTH_IN_ELEMENTS = 80;
-const LEVEL_HEIGHT_IN_ELEMENTS = 25;

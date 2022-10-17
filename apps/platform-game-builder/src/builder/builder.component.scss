@@ -9,15 +9,11 @@
   justify-content: space-between;
   padding: 20px;
 }
-.levels {
-  display: flex;
-}
 .availableElements {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.level,
 .element {
   display: flex;
   justify-content: center;
@@ -28,14 +24,11 @@
   margin: 0 5px;
   cursor: pointer;
 }
-.level:hover {
-  opacity: 0.5;
-}
 .element:hover{
   opacity: 0.5;
 }
 .element.selected {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px, rgb(51, 51, 51) 0 0 0 3px;
 }
 .saveChanges {
   cursor: pointer;

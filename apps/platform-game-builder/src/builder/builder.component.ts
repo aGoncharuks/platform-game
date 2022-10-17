@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
-import { combineLatest, map, skipWhile, tap } from 'rxjs';
+import { combineLatest, map, skipWhile } from 'rxjs';
 import { ELEMENTS_MAP } from '../../../../game/elements-map.js';
 import { Vec } from '../../../../game/utils/vec.js';
+import { BuilderLevelsComponent } from './builder-levels/builder-levels.component';
 import { BuilderComponentStore } from './builder.component.store';
 import { GameElementCoordinates } from './builder.types';
 
@@ -12,16 +13,11 @@ import { GameElementCoordinates } from './builder.types';
   selector: 'pgb-builder',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, BuilderLevelsComponent],
   providers: [provideComponentStore(BuilderComponentStore)],
   template: `
     <div class="controlPanel">
-      <div class="levels">
-        <div *ngFor="let level of levels$ | async; index as i"
-             (click)="selectLevel(i)"
-             class="level">L{{i + 1}}</div>
-        <div class="level" (click)="addLevel()">+</div>
-      </div>
+      <pgb-builder-levels></pgb-builder-levels>
       <div class="availableElements">
         <div *ngFor="let element of availableElements"
              (click)="selectElement(element)"
@@ -48,18 +44,15 @@ import { GameElementCoordinates } from './builder.types';
 export class Builder implements OnInit {
   store = inject(BuilderComponentStore);
 
-  private static EMPTY_ELEMENT_TYPE = 'empty';
-  private static LEVEL_WIDTH_IN_ELEMENTS = 80;
-  private static LEVEL_HEIGHT_IN_ELEMENTS = 25;
-
   elementClassListMap: Record<string, string> = {};
   availableElements = Object.entries(ELEMENTS_MAP).map(
     //@ts-ignore
     ([key, value]) => ({...value, key})
   )
-
   levels$ = this.store.levels$;
   selectedElement$ = this.store.selectedElement$;
+
+  private static EMPTY_ELEMENT_TYPE = 'empty';
   private selectedLevelIndex$ = this.store.selectedLevelIndex$;
 
   elementsGrid$ = combineLatest(this.levels$, this.selectedLevelIndex$).pipe(
@@ -107,19 +100,11 @@ export class Builder implements OnInit {
     }
   }
 
-  selectLevel(index: number) {
-    this.store.setSelectedLevelIndex(index);
-  }
-
   selectElement(element: any) {
     this.store.setSelectedElement(element);
   }
 
   replaceElementWithSelected(coordinates: GameElementCoordinates) {
     this.store.replaceElementWithSelected(coordinates);
-  }
-
-  addLevel(): void {
-    this.store.addLevel();
   }
 }

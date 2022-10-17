@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+}
+.level {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.level:hover {
+  opacity: 0.5;
+}
