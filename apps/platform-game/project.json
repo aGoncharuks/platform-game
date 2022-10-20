@@ -1,0 +1,64 @@
+{
+  "name": "platform-game",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/platform-game/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/platform-game",
+        "compiler": "babel",
+        "main": "apps/platform-game/src/main.ts",
+        "tsConfig": "apps/platform-game/tsconfig.app.json",
+        "assets": [
+          "apps/platform-game/src/favicon.ico",
+          "apps/platform-game/src/assets"
+        ],
+        "index": "apps/platform-game/src/index.html",
+        "baseHref": "/",
+        "polyfills": "apps/platform-game/src/polyfills.ts",
+        "styles": ["apps/platform-game/src/styles.css"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/platform-game/src/environments/environment.ts",
+              "with": "apps/platform-game/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "options": {
+        "buildTarget": "platform-game:build",
+        "port": 8080
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "platform-game:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/platform-game/**/*.ts"]
+      }
+    }
+  }
+}
