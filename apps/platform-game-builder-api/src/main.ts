@@ -6,7 +6,7 @@
 import * as express from 'express';
 const fs = require(`fs`).promises;
 
-const LEVELS_FILE_PATH = 'game/levels.json';
+const LEVELS_FILE_PATH = 'apps/platform-game/src/config/levels.json';
 
 const app = express();
 

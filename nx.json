@@ -40,17 +40,6 @@
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
   },
   "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint"
-      }
-    },
     "@nrwl/angular:application": {
       "style": "scss",
       "linter": "eslint",
@@ -76,5 +65,5 @@
       "unitTestRunner": "none"
     }
   },
-  "defaultProject": "builder"
+  "defaultProject": "platform-game-builder"
 }
