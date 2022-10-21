@@ -66,9 +66,7 @@
         }
       },
       "defaultConfiguration": "development",
-      "options": {
-        "proxyConfig": "apps/platform-game-builder/proxy.conf.json"
-      }
+      "options": {}
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

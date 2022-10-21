@@ -4,6 +4,13 @@
   background-color: lightblue;
   height: 100vh;
 }
+.togglePreviewBtn {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  cursor: pointer;
+  padding: 20px 40px
+}
 .controlPanel {
   display: flex;
   justify-content: space-between;
@@ -29,6 +36,11 @@
 }
 .element.selected {
   box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px, rgb(51, 51, 51) 0 0 0 3px;
+}
+.actionButtons {
+  display: flex;
+  align-items: center;
+  padding-right: 200px;
 }
 .actionBtn {
   cursor: pointer;

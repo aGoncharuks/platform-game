@@ -69,7 +69,7 @@ export class BuilderComponentStore extends ComponentStore<BuilderState> {
 
   loadLevels = this.effect(event$ => {
     return event$.pipe(
-      switchMap(() => this.http.get<BuilderState['levels']>('api/levels')),
+      switchMap(() => this.http.get<BuilderState['levels']>('http://localhost:3333/api/levels')),
       tap(levels => this.setLevels(levels))
     );
   });
@@ -77,7 +77,7 @@ export class BuilderComponentStore extends ComponentStore<BuilderState> {
   saveLevels = this.effect(event$ => {
     return event$.pipe(
       withLatestFrom(this.levels$),
-      switchMap(([_, levels]) => this.http.post('api/levels', levels))
+      switchMap(([_, levels]) => this.http.post('http://localhost:3333/api/levels', levels))
     );
   });
 }

@@ -19,23 +19,24 @@ import { GameElementCoordinates } from './builder.types';
   providers: [provideComponentStore(BuilderComponentStore)],
   template: `
     <ng-container *ngrxLet="showPreview$ | async as showPreview">
-      <div class="controlPanel">
-        <pgb-builder-levels></pgb-builder-levels>
-        <div class="availableElements">
-          <div *ngFor="let element of availableElements"
-               (click)="selectElement(element)"
-               [class.selected]="(selectedElement$ | async) === element"
-               class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
-          <button (click)="saveLevels()"
-                  class="actionBtn">Save
-          </button>
-          <button (click)="togglePreview()"
-                  class="actionBtn">{{showPreview ? 'Builder' : 'Preview'}}
-          </button>
+      <button (click)="togglePreview()"
+              class="togglePreviewBtn">{{showPreview ? 'Builder' : 'Preview'}}
+      </button>
+      <ng-container *ngIf="!showPreview">
+        <div class="controlPanel">
+          <pgb-builder-levels></pgb-builder-levels>
+          <div class="availableElements">
+            <div *ngFor="let element of availableElements"
+                 (click)="selectElement(element)"
+                 [class.selected]="(selectedElement$ | async) === element"
+                 class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
+          </div>
+          <div class="actionButtons">
+            <button (click)="saveLevels()"
+                    class="actionBtn">Save
+            </button>
+          </div>
         </div>
-      </div>
-      <pgb-builder-preview *ngIf="showPreview; else builder" class="preview"></pgb-builder-preview>
-      <ng-template #builder>
         <div class="levelGrid">
           <div *ngFor="let row of elementsGrid$ | async; index as y"
                class="elementRow">
@@ -46,7 +47,8 @@ import { GameElementCoordinates } from './builder.types';
             </div>
           </div>
         </div>
-      </ng-template>
+      </ng-container>
+      <pgb-builder-preview *ngIf="showPreview" class="preview"></pgb-builder-preview>
     </ng-container>
   `,
   styleUrls: ['builder.component.scss']
