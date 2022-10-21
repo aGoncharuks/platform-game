@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { LetModule } from '@ngrx/component';
 import { provideComponentStore } from '@ngrx/component-store';
 import { combineLatest, map, skipWhile } from 'rxjs';
 import { ELEMENTS_MAP } from '../../../platform-game/src/config/elements-map';
 import { Vec } from '../../../platform-game/src/utils/vec';
 import { BuilderLevelsComponent } from './builder-levels/builder-levels.component';
+import { BuilderPreviewComponent } from './builder-preview/builder-preview.component';
 import { BuilderComponentStore } from './builder.component.store';
 import { GameElementCoordinates } from './builder.types';
 
@@ -13,31 +15,39 @@ import { GameElementCoordinates } from './builder.types';
   selector: 'pgb-builder',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, HttpClientModule, BuilderLevelsComponent],
+  imports: [CommonModule, HttpClientModule, BuilderLevelsComponent, BuilderPreviewComponent, LetModule],
   providers: [provideComponentStore(BuilderComponentStore)],
   template: `
-    <div class="controlPanel">
-      <pgb-builder-levels></pgb-builder-levels>
-      <div class="availableElements">
-        <div *ngFor="let element of availableElements"
-             (click)="selectElement(element)"
-             [class.selected]="(selectedElement$ | async) === element"
-             class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
-        <button (click)="saveLevels()"
-                class="saveChanges">Save
-        </button>
-      </div>
-    </div>
-    <div class="levelGrid">
-      <div *ngFor="let row of elementsGrid$ | async; index as y"
-           class="elementRow">
-        <div *ngFor="let element of row; index as x"
-             (click)="replaceElementWithSelected({x, y})"
-             class="elementCell">
-          <div class="elementView {{elementClassListMap[element]}}"></div>
+    <ng-container *ngrxLet="showPreview$ | async as showPreview">
+      <div class="controlPanel">
+        <pgb-builder-levels></pgb-builder-levels>
+        <div class="availableElements">
+          <div *ngFor="let element of availableElements"
+               (click)="selectElement(element)"
+               [class.selected]="(selectedElement$ | async) === element"
+               class="element {{elementClassListMap[element.key]}}">{{element.key}}</div>
+          <button (click)="saveLevels()"
+                  class="actionBtn">Save
+          </button>
+          <button (click)="togglePreview()"
+                  class="actionBtn">{{showPreview ? 'Builder' : 'Preview'}}
+          </button>
         </div>
       </div>
-    </div>
+      <pgb-builder-preview *ngIf="showPreview; else builder" class="preview"></pgb-builder-preview>
+      <ng-template #builder>
+        <div class="levelGrid">
+          <div *ngFor="let row of elementsGrid$ | async; index as y"
+               class="elementRow">
+            <div *ngFor="let element of row; index as x"
+                 (click)="replaceElementWithSelected({x, y})"
+                 class="elementCell">
+              <div class="elementView {{elementClassListMap[element]}}"></div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
   `,
   styleUrls: ['builder.component.scss']
 })
@@ -51,6 +61,7 @@ export class Builder implements OnInit {
   )
   levels$ = this.store.levels$;
   selectedElement$ = this.store.selectedElement$;
+  showPreview$ = this.store.showPreview$;
 
   private static EMPTY_ELEMENT_TYPE = 'empty';
   private selectedLevelIndex$ = this.store.selectedLevelIndex$;
@@ -70,6 +81,10 @@ export class Builder implements OnInit {
 
   async saveLevels() {
     this.store.saveLevels();
+  }
+
+  async togglePreview() {
+    this.store.togglePreview();
   }
 
   fillElementsClassListMap() {

@@ -30,7 +30,7 @@
 .element.selected {
   box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px, rgb(51, 51, 51) 0 0 0 3px;
 }
-.saveChanges {
+.actionBtn {
   cursor: pointer;
   padding: 20px 40px;
   margin-left: 40px;
@@ -41,6 +41,7 @@
   align-items: flex-start;
   overflow: auto;
   padding-bottom: 10px;
+  position: relative;
 }
 .elementRow {
   display: flex;
@@ -68,6 +69,11 @@
   line-height: 1;
   text-align: center;
 }
+.preview {
+  width: 100%;
+  height: 100%;
+}
+
 .lava,
 .lava-mob {
   background: rgb(183, 65, 14);

@@ -13,5 +13,6 @@ export interface GameElementCoordinates {
 export interface BuilderState {
   levels: GameLevel[],
   selectedLevelIndex: number,
-  selectedElement: GameElement | undefined
+  selectedElement: GameElement | undefined,
+  showPreview: boolean
 }

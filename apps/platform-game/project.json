@@ -45,7 +45,8 @@
       "executor": "@nrwl/webpack:dev-server",
       "options": {
         "buildTarget": "platform-game:build",
-        "port": 8080
+        "port": 8080,
+        "hmr": true
       },
       "configurations": {
         "production": {

@@ -10,7 +10,8 @@ const levelHeightInElements = 25;
 const initialBuilderStore: BuilderState = {
   levels: [],
   selectedLevelIndex: 0,
-  selectedElement: undefined
+  selectedElement: undefined,
+  showPreview: false
 }
 
 @Injectable()
@@ -22,6 +23,7 @@ export class BuilderComponentStore extends ComponentStore<BuilderState> {
   levels$ = this.select(state => state.levels);
   selectedLevelIndex$ = this.select(state => state.selectedLevelIndex);
   selectedElement$ = this.select(state => state.selectedElement);
+  showPreview$ = this.select(state => state.showPreview);
 
   setLevels = this.updater<GameLevel[]>(
     (state, levels) => ({...state, levels})
@@ -56,6 +58,12 @@ export class BuilderComponentStore extends ComponentStore<BuilderState> {
         '.'.repeat(levelWidthInElements)
       );
       return {...state, levels: [...state.levels, newLevel]}
+    }
+  );
+
+  togglePreview = this.updater(
+    (state) => {
+      return {...state, showPreview: !state.showPreview }
     }
   );
 
